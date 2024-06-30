@@ -18,34 +18,27 @@ Installation
 To run the project locally, follow these steps:
 
 Clone the repository
-
-sh
-Αντιγραφή κώδικα
-git clone https://github.com/yourusername/hotel-booking-app-backend.git
+git clone https://github.com/mariatemp/hotel-booking-app-backend.git
 cd hotel-booking-app-backend
 Install dependencies
 
-sh
-Αντιγραφή κώδικα
 dotnet restore
 Set up environment variables
 Configure the appsettings.json file with your database connection strings and other settings. You can use appsettings.Development.json for development settings.
 
 Run database migrations
 
-sh
-Αντιγραφή κώδικα
+
 dotnet ef database update
 Run the application
 
-sh
-Αντιγραφή κώδικα
+
 dotnet run
 Access the API
-The API will be available at http://localhost:5000/api.
+The API will be available at http://localhost:5139/api.
 
 Project Structure
-Αντιγραφή κώδικα
+
 HotelBookingApp/
 ├── Controllers/
 ├── Data/
