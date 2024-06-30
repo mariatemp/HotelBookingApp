@@ -1,0 +1,80 @@
+﻿@using System.Security.Claims
+@model HotelBookingApp.DTO.BookingDTO
+
+@{
+    var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+}
+<form asp-action="Book" method="post">
+    <div class="form-group">
+        <label asp-for="Firstname" class="control-label"></label>
+        <input asp-for="Firstname" class="form-control" />
+        <span asp-validation-for="Firstname" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="Lastname" class="control-label"></label>
+        <input asp-for="Lastname" class="form-control" />
+        <span asp-validation-for="Lastname" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="NumberOfGuests" class="control-label"></label>
+        <input asp-for="NumberOfGuests" class="form-control" />
+        <span asp-validation-for="NumberOfGuests" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="StartDate" class="control-label"></label>
+        <input asp-for="StartDate" class="form-control" type="date" id="startDate" />
+        <span asp-validation-for="StartDate" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="EndDate" class="control-label"></label>
+        <input asp-for="EndDate" class="form-control" type="date" id="endDate" />
+        <span asp-validation-for="EndDate" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="TotalPrice" class="control-label"></label>
+        <input asp-for="TotalPrice" class="form-control" readonly id="totalPrice" />
+        <span asp-validation-for="TotalPrice" class="text-danger"></span>
+    </div>
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+    <input type="hidden" asp-for="BookingId" />
+    <input asp-for="PricePerNight" id="pricePerNight" value="@Model.PricePerNight" />
+    <button type="submit" class="btn btn-primary">Book</button>
+</form>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+
+    <script>
+        function calculateTotalPrice() {
+            var pricePerNight = parseFloat(document.getElementById("pricePerNight").value);
+            var startDate = new Date(document.getElementById("startDate").value);
+            var endDate = new Date(document.getElementById("endDate").value);
+
+            if (!isNaN(pricePerNight) && startDate && endDate) {
+                var timeDiff = endDate - startDate;
+                var days = timeDiff / (1000 * 3600 * 24);
+                if (days > 0) {
+                    var totalPrice = Math.floor(days * pricePerNight);
+                    document.getElementById("totalPrice").value = totalPrice;
+                } else {
+                    document.getElementById("totalPrice").value = "";
+                }
+            } else {
+                document.getElementById("totalPrice").value = "";
+            }
+        }
+
+        document.getElementById("startDate").addEventListener("change", calculateTotalPrice);
+        document.getElementById("endDate").addEventListener("change", calculateTotalPrice);
+    </script>
+}
+
+
+
+
+
+
+
+

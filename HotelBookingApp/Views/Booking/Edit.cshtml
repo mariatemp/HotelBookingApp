@@ -1,0 +1,103 @@
+﻿@model HotelBookingApp.DTO.BookingDTO
+
+@{
+    ViewData["Title"] = "Edit Booking";
+}
+
+<h1>Edit Booking</h1>
+
+<h4>Booking</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Edit">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="BookingId" />
+            <div class="form-group">
+                <label asp-for="Firstname" class="control-label"></label>
+                <input asp-for="Firstname" class="form-control" />
+                <span asp-validation-for="Firstname" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Lastname" class="control-label"></label>
+                <input asp-for="Lastname" class="form-control" />
+                <span asp-validation-for="Lastname" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="NumberOfGuests" class="control-label"></label>
+                <input asp-for="NumberOfGuests" class="form-control" />
+                <span asp-validation-for="NumberOfGuests" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="StartDate" class="control-label"></label>
+                <input asp-for="StartDate" class="form-control" type="date" id="startDate" value="@Model.StartDate.ToString("yyyy-MM-dd")" />
+                <span asp-validation-for="StartDate" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="EndDate" class="control-label"></label>
+                <input asp-for="EndDate" class="form-control" type="date" id="endDate" value="@Model.EndDate.ToString("yyyy-MM-dd")" />
+                <span asp-validation-for="EndDate" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="TotalPrice" class="control-label"></label>
+                <input asp-for="TotalPrice" class="form-control" readonly id="totalPrice" />
+                <span asp-validation-for="TotalPrice" class="text-danger"></span>
+            </div>
+            <input type="hidden" asp-for="AccommodationId" />
+            <input type="hidden" asp-for="UserId" />
+            <input type="hidden" asp-for="BookingId" />
+            <input type="hidden" asp-for="PricePerNight" id="pricePerNight" value="@Model.PricePerNight" />
+            <button type="submit" class="btn btn-primary">Save</button>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+
+    <script>
+        function calculateTotalPrice() {
+            var pricePerNight = parseFloat(document.getElementById("pricePerNight").value);
+            console.log("Price Per Night Loaded: ", pricePerNight);
+
+            var startDate = new Date(document.getElementById("startDate").value);
+            var endDate = new Date(document.getElementById("endDate").value);
+
+            console.log("Price Per Night: ", pricePerNight);
+            console.log("Start Date: ", startDate);
+            console.log("End Date: ", endDate);
+
+            if (!isNaN(pricePerNight) && startDate && endDate) {
+                var timeDiff = endDate - startDate;
+                var days = timeDiff / (1000 * 3600 * 24);
+                console.log("Days: ", days);
+
+                if (days > 0) {
+                    var totalPrice = Math.floor(days * pricePerNight);
+                    document.getElementById("totalPrice").value = totalPrice;
+                    console.log("Total Price: ", totalPrice);
+                } else {
+                    document.getElementById("totalPrice").value = "";
+                    console.log("Invalid Days: Total Price set to empty");
+                }
+            } else {
+                document.getElementById("totalPrice").value = "";
+                console.log("Invalid Price Per Night or Dates: Total Price set to empty");
+            }
+        }
+
+        document.getElementById("startDate").addEventListener("change", calculateTotalPrice);
+        document.getElementById("endDate").addEventListener("change", calculateTotalPrice);
+
+        calculateTotalPrice();
+    </script>
+}
+
+
+
+
+
+
+

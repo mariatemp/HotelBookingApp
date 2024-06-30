@@ -1,0 +1,82 @@
+﻿@model HotelBookingApp.DTO.AccommodationDTO
+
+@{
+    ViewBag.Title = "Edit Accommodation";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Edit Accommodation</h2>
+
+<form asp-action="Edit" id="accommodationForm">
+    <input type="hidden" asp-for="AccommodationId" />
+    <div class="form-group">
+        <label asp-for="Name" class="control-label"></label>
+        <input asp-for="Name" class="form-control" />
+        <span asp-validation-for="Name" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="Location" class="control-label"></label>
+        <input asp-for="Location" class="form-control" />
+        <span asp-validation-for="Location" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="City" class="control-label"></label>
+        <input asp-for="City" class="form-control" />
+        <span asp-validation-for="City" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="Address" class="control-label"></label>
+        <input asp-for="Address" class="form-control" />
+        <span asp-validation-for="Address" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="Description" class="control-label"></label>
+        <textarea asp-for="Description" class="form-control"></textarea>
+        <span asp-validation-for="Description" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="PricePerNight" class="control-label"></label>
+        <input asp-for="PricePerNight" class="form-control" value="@Model.PricePerNight" />
+        <span asp-validation-for="PricePerNight" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="AvailableFrom" class="control-label"></label>
+        <input asp-for="AvailableFrom" class="form-control" type="date" />
+        <span asp-validation-for="AvailableFrom" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="AvailableTo" class="control-label"></label>
+        <input asp-for="AvailableTo" class="form-control" type="date" />
+        <span asp-validation-for="AvailableTo" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="UserId" class="control-label"></label>
+        <select asp-for="UserId" class="form-control" asp-items="ViewBag.Users"></select>
+        <span asp-validation-for="UserId" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <input type="submit" value="Save" class="btn btn-primary" />
+    </div>
+</form>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+    <script>
+        document.getElementById("accommodationForm").addEventListener("submit", function (event) {
+            var priceInput = document.querySelector("input[name='PricePerNight']");
+            if (priceInput) {
+                var priceValue = priceInput.value.replace(",", ".");
+                priceInput.value = priceValue;
+            }
+        });
+    </script>
+}
+
+
+
